@@ -8,7 +8,7 @@ def draw_circles_with_converging_rings(screen, circles):
     pygame.mixer.init()
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)  # Font for the numbers
-    hit_sound = pygame.mixer.Sound('E:\Mark\Progamming\Python\Projects\quhacks2023\soft-hitsoft.wav')
+    hit_sound = pygame.mixer.Sound('soft-hitsoft.wav')
     # Initialize the score
     score = 0
     combo=1
