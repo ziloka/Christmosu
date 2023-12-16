@@ -8,7 +8,7 @@ def draw_circles_with_converging_rings(screen, circles):
     pygame.mixer.init()
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)  # Font for the numbers
-    hit_sound = pygame.mixer.Sound('soft-hitsoft.wav')
+    hit_sound = pygame.mixer.Sound('E:\Mark\Progamming\Python\Projects\quhacks2023\soft-hitsoft.wav')
     # Initialize the score
     score = 0
     combo=1
@@ -104,7 +104,7 @@ def draw_circles_with_converging_rings(screen, circles):
                             max_combo = combo
                         combo = 1
                         miss+=1
-                        print("combo break sound")  # Print a message
+                        #print("combo break sound")  # Print a message
 
         pygame.display.flip()
         clock.tick(60)
@@ -138,11 +138,11 @@ def random_circles(time, num):
         if color:
             circles.append(
                 {'color': (255, 0, 0), 'pos': (xpos, ypos), 'radius': 40, 'ring_radius': 100, 'start_radius': 100,
-                 'speed': 1, 'draw_circle': True, 'start_time': time+500 + i * 400, 'local_num': local})
+                 'speed': 1, 'draw_circle': True, 'start_time': time+500 + i * 320, 'local_num': local})
         else:
             circles.append(
                 {'color': (0, 128, 0), 'pos': (xpos, ypos), 'radius': 40, 'ring_radius': 100, 'start_radius': 100,
-                 'speed': 1, 'draw_circle': True, 'start_time': time+500 + i * 400, 'local_num': local})
+                 'speed': 1, 'draw_circle': True, 'start_time': time+500 + i * 320, 'local_num': local})
         past_x = xpos
         past_y = ypos
     return circles
@@ -175,31 +175,48 @@ screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
 title = 0
-game = 1
+random_game = 1
 end = 2
+hippo_game = 3
+christmas=4
 state = title
+buttons = [
+    {"label": "Random (Medium)", "pos": (1280 // 2, 720 // 2 + 120), "action": "random_game"},
+]
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            for button in buttons:
+                x, y, w, h = button["rect"]
+                if x < mouse_pos[0] < x + w and y < mouse_pos[1] < y + h:
+                    # if button["action"] == "christmas":
+                    #     state = christmas
+                    # elif button["action"] == "hippo_game":
+                    #     state = hippo_game
+                    if button["action"] == "random_game":
+                        state = random_game
     pygame.display.flip()
     if state == title:
         # Draw title screen
-        screen.fill('black')
-        font = pygame.font.Font(None, 36)
-        text = font.render("TITLE, SELECT A DIFFICULTY", True, (255, 255, 255))
-        screen.blit(text, (200, 200))
+        screen.fill("green")
+        for button in buttons:
+            rect = pygame.draw.rect(screen, (255, 0, 0),(button["pos"][0], button["pos"][1], 200, 50))
+            button["rect"] = rect  # Store the Rect object for later
 
-        # Check for mouse click to start the game
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            state = game
-    elif state == game:
+            # Draw the text
+            font = pygame.font.Font(None, 24)
+            label = font.render(button["label"], True, (255, 255, 255))
+            screen.blit(label, (button["pos"][0] + 10, button["pos"][1] + 10))
 
-        circles = random_circles(pygame.time.get_ticks(),20)
+    elif state == random_game:
+        sleigh = pygame.mixer.Sound('E:\Mark\Progamming\Python\Projects\quhacks2023\sleigh.wav')
+        sleigh.play()
+        circles = random_circles(pygame.time.get_ticks(),564)
         info = draw_circles_with_converging_rings(screen, circles)
-        print("OKE")
         state = end
-
     elif state == end:
         # Draw end screen
         font = pygame.font.Font(None, 36)
