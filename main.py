@@ -8,7 +8,7 @@ def draw_circles_with_converging_rings(screen, circles):
     pygame.mixer.init()
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)  # Font for the numbers
-    hit_sound = pygame.mixer.Sound('E:\Mark\Progamming\Python\Projects\quhacks2023\soft-hitsoft.wav')
+    hit_sound = pygame.mixer.Sound('soft-hitsoft.wav')
     # Initialize the score
     score = 0
     combo=1
@@ -69,12 +69,12 @@ def draw_circles_with_converging_rings(screen, circles):
                             elif circle['ring_radius'] > (circle['radius'] + circle['start_radius']) / 3:
                                 score += 100 * combo
                                 hits += 1
-                                winsound.PlaySound(r'E:\Mark\Progamming\Python\Projects\quhacks2023\soft-hitsoft.wav',
+                                winsound.PlaySound(r'soft-hitsoft.wav',
                                                    winsound.SND_FILENAME)
                             else:
                                 score += 300 * combo
                                 hits += 1
-                                winsound.PlaySound(r'E:\Mark\Progamming\Python\Projects\quhacks2023\soft-hitsoft.wav', winsound.SND_FILENAME)
+                                winsound.PlaySound(r'soft-hitsoft.wav', winsound.SND_FILENAME)
                             circle['ring_radius'] = 0  # Also hide the ring
                             combo += 1
         screen.fill((0, 0, 0))  # Fill the screen with black
