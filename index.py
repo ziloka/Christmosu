@@ -12,11 +12,13 @@ def draw_circles_with_converging_rings(screen, circles):
             if event.type == pygame.QUIT:
                 pygame.quit()
             elif event.type == END_LINGER_EVENT:
-                # When the linger time ends, hide the circle
                 circles[event.circle_index]['draw_circle'] = False
-
-        screen.fill((0, 0, 0))  # Fill the screen with black
-
+            elif event.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
+        screen.fill((0, 0, 0)) 
+                # get a list of all sprites that are under the mouse cursor
+                # clicked_sprites = [s for s in sprites if s.rect.collidepoint(pos)]
+                # do something with the clicked sprites... sprites...
         for i, circle in enumerate(circles):
             # Delay before drawing the circle and its ring
             if pygame.time.get_ticks() < circle['start_time']:
@@ -35,6 +37,7 @@ def draw_circles_with_converging_rings(screen, circles):
                 pygame.time.set_timer(END_LINGER_EVENT, int(circle['linger_time'] * 1000), True)
                 pygame.event.post(pygame.event.Event(END_LINGER_EVENT, circle_index=i))
                 circle['draw_circle'] = None  # Prevent this branch from being executed again
+                # add animated X
 
         pygame.display.flip()
         clock.tick(60)
