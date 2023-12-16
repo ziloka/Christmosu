@@ -1,34 +1,50 @@
 import pygame
 
-def draw_circle_with_converging_ring(screen, color, x, y, radius, ring_radius, speed):
+# Define a custom event for the end of the linger time
+END_LINGER_EVENT = pygame.USEREVENT + 1
+
+def draw_circles_with_converging_rings(screen, circles):
     pygame.init()
     clock = pygame.time.Clock()
 
-    # Flag to control the visibility of the circle
-    draw_circle = True
-
-    while draw_circle:
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+            elif event.type == END_LINGER_EVENT:
+                # When the linger time ends, hide the circle
+                circles[event.circle_index]['draw_circle'] = False
 
         screen.fill((0, 0, 0))  # Fill the screen with black
 
-        # Draw the main circle if the flag is set
-        if draw_circle:
-            pygame.draw.circle(screen, color, (x, y), radius)
+        for i, circle in enumerate(circles):
+            # Delay before drawing the circle and its ring
+            if pygame.time.get_ticks() < circle['start_time']:
+                continue
 
-        # Draw the converging ring
-        if ring_radius > radius:
-            pygame.draw.circle(screen, color, (x, y), ring_radius, 1)
-            ring_radius -= speed
-        elif draw_circle:  # Only pause and hide the circle once
-            # Linger for 2.56 seconds after the ring converges
-            pygame.time.wait(int(1.56 * 1000))  # pygame.time.wait takes milliseconds
-            draw_circle = False  # Hide the circle
+            # Draw the main circle if the flag is set
+            if circle['draw_circle']:
+                pygame.draw.circle(screen, circle['color'], circle['pos'], circle['radius'])
+
+            # Draw the converging ring
+            if circle['ring_radius'] > circle['radius']:
+                pygame.draw.circle(screen, circle['color'], circle['pos'], circle['ring_radius'], 1)
+                circle['ring_radius'] -= circle['speed']
+            elif circle['draw_circle']:  # Only pause and hide the circle once
+                # Schedule the end of the linger time
+                pygame.time.set_timer(END_LINGER_EVENT, int(circle['linger_time'] * 1000), True)
+                pygame.event.post(pygame.event.Event(END_LINGER_EVENT, circle_index=i))
+                circle['draw_circle'] = None  # Prevent this branch from being executed again
 
         pygame.display.flip()
         clock.tick(60)
 
-screen = pygame.display.set_mode((900, 900))
-draw_circle_with_converging_ring(screen, (255, 255, 255), 170, 270, 20, 50, 0.2)
+screen = pygame.display.set_mode((800, 600))
+
+# Define your circles here
+circles = [
+    {'color': (255, 255, 255), 'pos': (400, 300), 'radius': 50, 'ring_radius': 100, 'speed': 1, 'linger_time': 2.56, 'draw_circle': True, 'start_time': 0},
+    {'color': (255, 0, 0), 'pos': (100, 100), 'radius': 50, 'ring_radius': 100, 'speed': 1, 'linger_time': 3.56, 'draw_circle': True, 'start_time': 1000}
+]
+
+draw_circles_with_converging_rings(screen, circles)
