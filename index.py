@@ -1,43 +1,29 @@
-import pygame
-
-WHITE =     (255, 255, 255)
-BLUE =      (  0,   0, 255)
-GREEN =     (  0, 255,   0)
-RED =       (255,   0,   0)
-TEXTCOLOR = (  0,   0,  0)
-(width, height) = (200, 300)
-
-running = True
-
-def main():
-    global running, screen
-    
+def draw_circle_with_converging_ring(screen, color, x, y, radius, ring_radius, speed):
     pygame.init()
-    screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("TUFF")
-    screen.fill("white")
-    pygame.display.update()
-    
-    while running:
-        ev = pygame.event.get()
+    clock = pygame.time.Clock()
 
-        for event in ev:
+    # Flag to control the visibility of the circle
+    draw_circle = True
 
-            if event.type == pygame.MOUSEBUTTONUP:
-                drawCircle()
-                pygame.display.update()
-
+    while draw_circle:
+        for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
 
-def getPos():
-    pos = pygame.mouse.get_pos()
-    return (pos)
+        screen.fill((0, 0, 0))  # Fill the screen with black
 
-def drawCircle():
-    pos=getPos()
-    pygame.draw.circle(screen, BLUE, pos, 20)
+        # Draw the main circle if the flag is set
+        if draw_circle:
+            pygame.draw.circle(screen, color, (x, y), radius)
 
+        # Draw the converging ring
+        if ring_radius > radius:
+            pygame.draw.circle(screen, color, (x, y), ring_radius, 1)
+            ring_radius -= speed
+        elif draw_circle:  # Only pause and hide the circle once
+            # Linger for 2.56 seconds after the ring converges
+            pygame.time.wait(int(1.56 * 1000))  # pygame.time.wait takes milliseconds
+            draw_circle = False  # Hide the circle
 
-if __name__ == '__main__':
-    main()
+        pygame.display.flip()
+        clock.tick(60)
