@@ -8,7 +8,7 @@ def draw_circles_with_converging_rings(screen, circles):
     pygame.mixer.init()
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)  # Font for the numbers
-    hit_sound = pygame.mixer.Sound('soft-hitsoft.wav')
+    hit_sound = pygame.mixer.Sound('E:\Mark\Progamming\Python\Projects\quhacks2023\soft-hitsoft.wav')
     # Initialize the score
     score = 0
     combo=1
@@ -69,12 +69,11 @@ def draw_circles_with_converging_rings(screen, circles):
                             elif circle['ring_radius'] > (circle['radius'] + circle['start_radius']) / 3:
                                 score += 100 * combo
                                 hits += 1
-                                winsound.PlaySound(r'soft-hitsoft.wav',
-                                                   winsound.SND_FILENAME)
+                                hit_sound.play()
                             else:
                                 score += 300 * combo
                                 hits += 1
-                                winsound.PlaySound(r'soft-hitsoft.wav', winsound.SND_FILENAME)
+                                hit_sound.play()
                             circle['ring_radius'] = 0  # Also hide the ring
                             combo += 1
         screen.fill((0, 0, 0))  # Fill the screen with black
@@ -115,7 +114,7 @@ def draw_circles_with_converging_rings(screen, circles):
             if combo > max_combo:
                 max_combo = combo
             return [score, max_combo, hits, miss]  # Return the score when the game ends
-def random_circles(num):
+def random_circles(time, num):
     circles=[]
     past_x = 0
     past_y = 0
@@ -139,11 +138,11 @@ def random_circles(num):
         if color:
             circles.append(
                 {'color': (255, 0, 0), 'pos': (xpos, ypos), 'radius': 40, 'ring_radius': 100, 'start_radius': 100,
-                 'speed': 1, 'draw_circle': True, 'start_time': 500 + i * 400, 'local_num': local})
+                 'speed': 1, 'draw_circle': True, 'start_time': time+500 + i * 400, 'local_num': local})
         else:
             circles.append(
                 {'color': (0, 128, 0), 'pos': (xpos, ypos), 'radius': 40, 'ring_radius': 100, 'start_radius': 100,
-                 'speed': 1, 'draw_circle': True, 'start_time': 500 + i * 400, 'local_num': local})
+                 'speed': 1, 'draw_circle': True, 'start_time': time+500 + i * 400, 'local_num': local})
         past_x = xpos
         past_y = ypos
     return circles
@@ -160,7 +159,6 @@ def end_screen(info):
     text = font.render(f"Accuracy: {accuracy:.1f}%", True, (0, 0, 0))
     screen.blit(text, (200, 400))
     pygame.display.flip()
-    time.sleep(10)
 
 # Define your circles here
 # circles = [
@@ -176,22 +174,40 @@ pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
+title = 0
+game = 1
+end = 2
+state = title
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    screen.fill("purple")
     pygame.display.flip()
-    circles = random_circles(20)
-    info = draw_circles_with_converging_rings(screen, circles)
-    end_screen(info)
+    if state == title:
+        # Draw title screen
+        screen.fill('black')
+        font = pygame.font.Font(None, 36)
+        text = font.render("TITLE, SELECT A DIFFICULTY", True, (255, 255, 255))
+        screen.blit(text, (200, 200))
 
+        # Check for mouse click to start the game
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            state = game
+    elif state == game:
+
+        circles = random_circles(pygame.time.get_ticks(),20)
+        info = draw_circles_with_converging_rings(screen, circles)
+        print("OKE")
+        state = end
+
+    elif state == end:
+        # Draw end screen
+        font = pygame.font.Font(None, 36)
+        end_screen(info)
+
+        # Check for mouse click to go back to the title screen
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            state = title
+            time.sleep(0.1)
     clock.tick(60)
 pygame.quit()
-
-
-print("DONE")
-
-time.sleep(20)
-
-#print("Score: "+str(info[0])+"\nMax Combo: "+str(info[1])+"\nHits: "+str(info[2])+" Misses: "+str(info[3])+"\nAccuracy: "+str(100 * (info[2]/(info[2]+info[3])))+"%")
