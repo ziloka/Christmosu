@@ -88,19 +88,15 @@ def draw_circles_with_converging_rings(screen, circles):
                 pygame.draw.circle(screen, circle['color'], circle['pos'], circle['radius'])
                 num = circle['local_num']
                 text = font.render(str(num), True, (0, 0, 0))  # Render the number
-                text_rect = text.get_rect(center=circle['pos'])  # Center the text
-                screen.blit(text, text_rect)  # Draw the text
-
-                # Draw the converging ring
+                text_rect = text.get_rect(center=circle['pos'])
+                screen.blit(text, text_rect)
                 if circle['ring_radius'] > circle['radius']:
                     pygame.draw.circle(screen, circle['color'], circle['pos'], circle['ring_radius'], 2)
                     circle['ring_radius'] -= circle['speed']
-                else:  # The ring has converged with the circle
-                    # Set the convergence time
-                    if pygame.time.get_ticks() >= circle['start_time'] + 500:  # Hardcoded to 500 milliseconds
+                else:
+                    if pygame.time.get_ticks() >= circle['start_time'] + 500:
                         circle['draw_circle'] = False
-                        circle['draw_circle'] = True
-                        circle['ring_radius'] = 0  # Also hide the ring
+                        circle['ring_radius'] = 0
                         if combo > max_combo:
                             max_combo = combo
                         combo = 1
