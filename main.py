@@ -99,6 +99,7 @@ def draw_circles_with_converging_rings(screen, circles):
                     # Set the convergence time
                     if pygame.time.get_ticks() >= circle['start_time'] + 500:  # Hardcoded to 500 milliseconds
                         circle['draw_circle'] = False
+                        circle['draw_circle'] = True
                         circle['ring_radius'] = 0  # Also hide the ring
                         if combo > max_combo:
                             max_combo = combo
@@ -181,7 +182,7 @@ hippo_game = 3
 christmas=4
 state = title
 buttons = [
-    {"label": "Random (Medium)", "pos": (1280 // 2, 720 // 2 + 120), "action": "random_game"},
+    {"label": "Sleigh Ride", "pos": (440, 200 + 120), "action": "random_game"},
 ]
 while running:
     for event in pygame.event.get():
@@ -203,7 +204,7 @@ while running:
         # Draw title screen
         screen.fill("green")
         for button in buttons:
-            rect = pygame.draw.rect(screen, (255, 0, 0),(button["pos"][0], button["pos"][1], 200, 50))
+            rect = pygame.draw.rect(screen, (255, 0, 0),(button["pos"][0], button["pos"][1], 300, 100))
             button["rect"] = rect  # Store the Rect object for later
 
             # Draw the text
@@ -217,6 +218,35 @@ while running:
         circles = random_circles(pygame.time.get_ticks(),564)
         info = draw_circles_with_converging_rings(screen, circles)
         state = end
+    # elif state == hippo_game:
+    #     #circles = random_circles(pygame.time.get_ticks(), 20)
+    #     st=pygame.time.get_ticks()
+    #     circles = []
+    #     for i in range(15):
+    #         for x in [{'color': (255, 255, 255), 'pos': (100,100), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+470+i*8463, 'local_num':1},
+    #         {'color': (255, 255, 255), 'pos': (100,620), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+940+i*8463,'local_num':2},
+	# 		{'color': (255, 255, 255), 'pos': (1180,620), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+1410+i*8463,'local_num':3},
+	# 		{'color': (255, 255, 255), 'pos': (1180,100), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+1880+i*8463,'local_num':4},
+	# 		{'color': (255, 255, 255), 'pos': (100,360), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+2350+i*8463,'local_num':5},
+	# 		{'color': (255, 255, 255), 'pos': (640,100), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+2820+i*8463,'local_num':6},
+	# 		{'color': (255, 255, 255), 'pos': (1180,360), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+3290+i*8463,'local_num':7},
+	# 		{'color': (255, 255, 255), 'pos': (640,620), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+3760+i*8463,'local_num':8},
+	# 		{'color': (255, 255, 255), 'pos': (100,620), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+4230+i*8463,'local_num':9},
+	# 		{'color': (0, 128, 0), 'pos': (640,100), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+4700+i*8463,'local_num':1},
+	# 		{'color': (0, 128, 0), 'pos': (1180,360), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+5170+i*8463,'local_num':2},
+	# 		{'color': (0, 128, 0), 'pos': (100,620), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+5640+i*8463,'local_num':3},
+	# 		{'color': (0, 128, 0), 'pos': (1180,620), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+6110+i*8463,'local_num':4},
+	# 		{'color': (0, 128, 0), 'pos': (100,520), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+6580+i*8463,'local_num':5},
+	# 		{'color': (0, 128, 0), 'pos': (1180,520), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+7050+i*8463,'local_num':6},
+	# 		{'color': (0, 128, 0), 'pos': (100,420), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+7520+i*8463,'local_num':7},
+	# 		{'color': (0, 128, 0), 'pos': (1180,420), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time': st+7990+i*8463,'local_num':8},
+	# 		{'color': (0, 128, 0), 'pos': (100,420), 'radius': 40, 'ring_radius': 100,'start_radius':100, 'speed': 1.5, 'draw_circle': True, 'start_time':st+8470+i*8463,'local_num':9}]:
+    #             circles.append(x)
+    #     print(len(circles))
+    #     hit_sound = pygame.mixer.Sound('E:\Mark\Progamming\Python\Projects\quhacks2023\hippo.wav')
+    #     hit_sound.play()
+    #     info = draw_circles_with_converging_rings(screen, circles)
+    #     state = end
     elif state == end:
         # Draw end screen
         font = pygame.font.Font(None, 36)
