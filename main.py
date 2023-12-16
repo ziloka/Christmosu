@@ -1,15 +1,19 @@
 import pygame
 import math
 import random
+import fading
 
 def draw_circles_with_converging_rings(screen, circles):
     pygame.init()
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)  # Font for the numbers
+    red_cross_images = fading.load_images("assets/red_cross")
+    player = fading.AnimatedSprite(position=(220, 220), images=red_cross_images)
+    red_cross_sprite = pygame.sprite.Group(player)
 
     # Initialize the score
     score = 0
-    combo=1
+    combo = 1
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -51,11 +55,17 @@ def draw_circles_with_converging_rings(screen, circles):
                     if pygame.time.get_ticks() >= circle['start_time'] + 500:  # Hardcoded to 500 milliseconds
                         circle['draw_circle'] = False
                         circle['ring_radius'] = 0  # Also hide the ring
+                        # animate x sprite
                         combo = 1
                         print("combo break sound")  # Print a message
 
         pygame.display.flip()
         clock.tick(60)
+        FPS = 60
+        red_cross_sprite.update(clock.tick(FPS) / 1000)
+        red_cross_sprite.draw(screen)
+        # idk what this does but without it the fading thing doesn't work
+        pygame.display.update()
 
 screen = pygame.display.set_mode((1000, 650))
 

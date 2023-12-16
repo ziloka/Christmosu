@@ -99,7 +99,6 @@ class AnimatedSprite(pygame.sprite.Sprite):
         self.update_time_dependent(dt)
         # self.update_frame_dependent()
 
-
 def main():
     images = load_images(path='assets/red_cross')  # Make sure to provide the relative or full path to the images directory.
     player = AnimatedSprite(position=(0, 0), images=images)
