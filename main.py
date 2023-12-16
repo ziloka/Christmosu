@@ -25,8 +25,13 @@ def draw_circles_with_converging_rings(screen, circles):
                     distance = math.sqrt(dx * dx + dy * dy)
                     if distance < circle['radius'] and circle['draw_circle']:
                         circle['draw_circle'] = False
+                        if circle['ring_radius'] > (circle['radius'] + circle['start_radius']) / 3:
+                            score += 100 * combo
+                            print('outer')
+                        else:
+                            score += 300 * combo
+                            print('inner')
                         circle['ring_radius'] = 0  # Also hide the ring
-                        score += 100 * combo  # Increment the score
                         combo +=1
         screen.fill((0, 0, 0))  # Fill the screen with black
 
@@ -68,10 +73,18 @@ screen = pygame.display.set_mode((1000, 650))
 #     {'color': (255, 255, 255), 'pos': (700, 500), 'radius': 50, 'ring_radius': 100, 'speed': 1, 'draw_circle': True, 'start_time': 4000}
 # ]
 circles=[]
-for i in range(20):
+past_x = 0
+past_y = 0
+for i in range(50):
     xpos = random.randint(100,900)
     ypos = random.randint(100, 550)
+    while (xpos > past_x - 30 and xpos < past_x + 30):
+        xpos = random.randint(100, 900)
+    while (ypos > past_y-30 and ypos < past_y+30):
+        ypos = random.randint(100, 550)
     print(i, xpos, ypos)
-    circles.append({'color': (255, 255, 255), 'pos': (xpos, ypos), 'radius': 40, 'ring_radius': 100, 'speed': 1.3, 'draw_circle': True, 'start_time':500+i*500})
+    circles.append({'color': (255, 255, 255), 'pos': (xpos, ypos), 'radius': 40, 'ring_radius': 100, 'start_radius': 100, 'speed': 1, 'draw_circle': True, 'start_time':500+i*400})
+    past_x = xpos
+    past_y = ypos
 score = draw_circles_with_converging_rings(screen, circles)
 print("Score:", score)
