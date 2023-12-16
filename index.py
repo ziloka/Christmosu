@@ -1,3 +1,5 @@
+import pygame
+
 def draw_circle_with_converging_ring(screen, color, x, y, radius, ring_radius, speed):
     pygame.init()
     clock = pygame.time.Clock()
@@ -27,3 +29,6 @@ def draw_circle_with_converging_ring(screen, color, x, y, radius, ring_radius, s
 
         pygame.display.flip()
         clock.tick(60)
+
+screen = pygame.display.set_mode((900, 900))
+draw_circle_with_converging_ring(screen, (255, 255, 255), 170, 270, 20, 50, 0.2)
