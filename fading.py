@@ -101,8 +101,8 @@ class AnimatedSprite(pygame.sprite.Sprite):
 
 
 def main():
-    images = load_images(path='assets')  # Make sure to provide the relative or full path to the images directory.
-    player = AnimatedSprite(position=(100, 100), images=images)
+    images = load_images(path='assets/red_cross')  # Make sure to provide the relative or full path to the images directory.
+    player = AnimatedSprite(position=(0, 0), images=images)
     all_sprites = pygame.sprite.Group(player)  # Creates a sprite group and adds 'player' to it.
 
     running = True
